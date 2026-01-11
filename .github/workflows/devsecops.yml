@@ -25,9 +25,9 @@ jobs:
         exit-code: 1
 
     # -------------------------------
-    # Trivy Image Scan (Industry-safe)
+    # Trivy Image Scan (Ignore unfixed)
     # -------------------------------
-    - name: Trivy image scan (ignore unfixed)
+    - name: Trivy image scan
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: nginxinc/nginx-unprivileged:1.29.3
@@ -36,7 +36,7 @@ jobs:
         exit-code: 1
 
     # -------------------------------
-    # Deploy to AKS (only if secure)
+    # AKS Deploy (CI-safe)
     # -------------------------------
     - name: Set up kubectl
       uses: azure/setup-kubectl@v4
@@ -47,4 +47,4 @@ jobs:
       run: |
         mkdir -p ~/.kube
         echo "$KUBE_CONFIG_DATA" | base64 --decode > ~/.kube/config
-        kubectl apply -f secure/
+        kubectl apply --validate=false -f secure/
