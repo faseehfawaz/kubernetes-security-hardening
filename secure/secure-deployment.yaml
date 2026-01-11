@@ -15,6 +15,14 @@ spec:
     spec:
       serviceAccountName: secure-sa
 
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
+
       volumes:
         - name: nginx-cache
           emptyDir: {}
@@ -46,13 +54,8 @@ spec:
               memory: "128Mi"
 
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 101
-            runAsGroup: 101
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - ALL
-            seccompProfile:
-              type: RuntimeDefault
