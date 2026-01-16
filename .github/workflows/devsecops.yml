@@ -59,3 +59,8 @@ jobs:
         run: |
           kubectl apply -f secure/ --validate=false
           kubectl rollout status deployment/secure-app -n secure-app
+
+      - name: Deploy hardened manifests to AKS
+        run: |
+          kubectl apply -f secure/namespace.yaml
+          kubectl apply -f secure/ --validate=false
